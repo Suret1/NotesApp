@@ -18,6 +18,11 @@ import java.time.format.FormatStyle
 
 class AddNoteBottomSheet : BottomSheetDialogFragment() {
     private lateinit var addNoteBottomSheetBinding: AddNoteBottomSheetBinding
+    private var noteModel: NotesModel? = null
+    private var title: String? = null
+    private var note: String? = null
+    private var date: String? = null
+    private val currentDate = LocalDateTime.now()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,24 +41,33 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
 //            expandedOffset = offsetFromTop
 //            state = BottomSheetBehavior.STATE_EXPANDED
 //        }
+        date = currentDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+        noteModel = arguments?.getParcelable("noteModel")
+        val check = arguments?.getBoolean("editCheck")
 
         addNoteBottomSheetBinding.apply {
-            saveBtn.setOnClickListener {
-                insertDataToDatabase()
+            if (check == true) {
+                updateButton()
+                saveBtn.setOnClickListener {
+                    updateNote()
+                }
+            } else {
+                saveBtn.setOnClickListener {
+                    insertNote()
+                }
             }
+
+
         }
 
     }
 
-    private fun insertDataToDatabase() {
+    private fun insertNote() {
+        title = addNoteBottomSheetBinding.noteTitleET.text.toString().trim()
+        note = addNoteBottomSheetBinding.noteET.text.toString().trim()
 
-        val title = addNoteBottomSheetBinding.noteTitleET.text.toString()
-        val note = addNoteBottomSheetBinding.noteET.text.toString()
-        val currentDate = LocalDateTime.now()
-        val date = currentDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-
-        if (inputCheck(title, note)) {
-            val note = NotesModel(null, title, note, date)
+        if (inputCheck(title!!, note!!)) {
+            val note = NotesModel(null, title!!, note!!, date!!)
             (activity as MainActivity).notesViewModel.insertNote(note)
             Toast.makeText(
                 requireContext(),
@@ -72,8 +86,44 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
 
     }
 
-    private fun inputCheck(title: String, desc: String): Boolean {
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(desc))
+    private fun updateNote() {
+
+        addNoteBottomSheetBinding.apply {
+            title = noteTitleET.text.toString().trim()
+            note = noteET.text.toString().trim()
+
+            if (inputCheck(title!!, note!!)) {
+                val note = NotesModel(noteModel?.id, title!!, note!!, date!!)
+                (activity as MainActivity).notesViewModel.updateNote(note)
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.update_note_successfully),
+                    Toast.LENGTH_SHORT
+                ).show()
+                activity?.onBackPressed()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.fill_out_all_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }
     }
+
+    private fun updateButton() {
+        addNoteBottomSheetBinding.apply {
+            saveBtn.text = resources.getString(R.string.update)
+            saveBtn.setBackgroundResource(R.drawable.update_btn_bg)
+            noteTitleET.setText(noteModel?.title)
+            noteET.setText(noteModel?.note)
+        }
+    }
+
+    private fun inputCheck(title: String, note: String): Boolean {
+        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(note))
+    }
+
 
 }
