@@ -5,6 +5,14 @@
     app:startDestination="@id/mainFragment">
 
     <action
+        android:id="@+id/action_to_folderFragment"
+        app:destination="@+id/folderFragment"
+        app:enterAnim="@anim/enter_from_right"
+        app:exitAnim="@anim/exit_to_left"
+        app:popEnterAnim="@anim/enter_from_left"
+        app:popExitAnim="@anim/exit_to_right" />
+
+    <action
         android:id="@+id/action_mainFragment_to_addNoteBottomSheet"
         app:destination="@id/addNoteBottomSheet" />
     <action
@@ -13,14 +21,17 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.suret.todoapp.ui.fragments.MainFragment"
-        android:label="MainFragment">
-    </fragment>
+        android:label="MainFragment" />
+    <fragment
+        android:id="@+id/folderFragment"
+        android:name="com.suret.todoapp.ui.fragments.folder.FolderFragment"
+        android:label="FolderFragment" />
+
     <dialog
         android:id="@+id/addNoteBottomSheet"
         android:name="com.suret.todoapp.ui.bottomsheet.AddNoteBottomSheet" />
     <dialog
         android:id="@+id/menuBottomSheet"
         android:name="com.suret.todoapp.ui.bottomsheet.MenuBottomSheet"
-        android:label="MenuBottomSheet">
-    </dialog>
+        android:label="MenuBottomSheet" />
 </navigation>

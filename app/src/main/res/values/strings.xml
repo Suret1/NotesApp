@@ -9,10 +9,14 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="edit">Edit</string>
-    <string name="delete_successfully">Successfully Deleted </string>
-    <string name="saved_note_successfully">Successfully Added</string>
-    <string name="update_note_successfully">Successfully Updated</string>
+    <string name="delete_success">Successfully Deleted </string>
+    <string name="saved_success">Successfully Added</string>
+    <string name="update_success">Successfully Updated</string>
     <string name="fill_out_all_fields">Please fill out all fields</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="add_folder">Add Folder</string>
+    <string name="moved_success">Successfully Moved</string>
+    <string name="fill_folder_name">Please insert folder name</string>
 
 
 </resources>

@@ -5,17 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-
-@Entity(tableName = "notes")
 @Parcelize
-data class NotesModel(
+@Entity(tableName = "folders")
+data class FolderModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
-    val folderID: Int?,
-    val folderName: String?,
-    val title: String,
-    val note: String,
-    val date: String
+    val folderId: Int? = null,
+    val title: String
 ) : Parcelable
 
 

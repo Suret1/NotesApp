@@ -1,13 +1,13 @@
 package com.suret.todoapp.ui.fragments.all
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.suret.todoapp.R
 import com.suret.todoapp.databinding.FragmentAllBinding
 import com.suret.todoapp.ui.main.MainActivity
@@ -37,8 +37,11 @@ class AllFragment : Fragment() {
 
         allBinding.apply {
             notesRecycler.adapter = adapter
-            floatingActionButton.setOnClickListener {
-                navController.navigate(R.id.action_mainFragment_to_addNoteBottomSheet)
+            addNoteFab.setOnClickListener {
+                bundle.apply {
+                    putBoolean("fromNote", true)
+                }
+                navController.navigate(R.id.action_mainFragment_to_addNoteBottomSheet, bundle)
             }
 
         }

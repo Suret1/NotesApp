@@ -34,7 +34,7 @@ class NotesRecyclerAdapter :
             itemBinding.noteTitle.text = notesModel?.title
             itemBinding.note.text = notesModel?.note
             itemBinding.noteDate.text = notesModel?.date
-
+            itemBinding.folderName.text = notesModel?.folderName
             itemBinding.root.setOnLongClickListener {
                 notesModel?.let { notes ->
                     onLongItemClickListener?.invoke(notes)

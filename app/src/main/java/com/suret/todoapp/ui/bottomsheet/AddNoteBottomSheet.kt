@@ -1,13 +1,13 @@
 package com.suret.todoapp.ui.bottomsheet
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.suret.todoapp.R
+import com.suret.todoapp.data.model.FolderModel
 import com.suret.todoapp.data.model.NotesModel
 import com.suret.todoapp.databinding.AddNoteBottomSheetBinding
 import com.suret.todoapp.ui.main.MainActivity
@@ -19,6 +19,7 @@ import java.time.format.FormatStyle
 class AddNoteBottomSheet : BottomSheetDialogFragment() {
     private lateinit var addNoteBottomSheetBinding: AddNoteBottomSheetBinding
     private var noteModel: NotesModel? = null
+    private var folderModel: FolderModel? = null
     private var title: String? = null
     private var note: String? = null
     private var date: String? = null
@@ -43,17 +44,27 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
 //        }
         date = currentDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
         noteModel = arguments?.getParcelable("noteModel")
-        val check = arguments?.getBoolean("editCheck")
+        folderModel = arguments?.getParcelable("folderModel")
+        val fromNote = arguments?.getBoolean("fromNote")
 
         addNoteBottomSheetBinding.apply {
-            if (check == true) {
-                updateButton()
-                saveBtn.setOnClickListener {
-                    updateNote()
+            when {
+                fromNote == true -> {
+                    saveBtn.setOnClickListener {
+                        insertNote()
+                    }
                 }
-            } else {
-                saveBtn.setOnClickListener {
-                    insertNote()
+                noteModel != null -> {
+                    updateUI(noteModel!!)
+                    saveBtn.setOnClickListener {
+                        updateNote()
+                    }
+                }
+                folderModel != null -> {
+                    updateUI(folderModel!!)
+                    saveBtn.setOnClickListener {
+                        updateFolder()
+                    }
                 }
             }
 
@@ -67,11 +78,11 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
         note = addNoteBottomSheetBinding.noteET.text.toString().trim()
 
         if (inputCheck(title!!, note!!)) {
-            val note = NotesModel(null, title!!, note!!, date!!)
+            val note = NotesModel(null, null, null, title!!, note!!, date!!)
             (activity as MainActivity).notesViewModel.insertNote(note)
             Toast.makeText(
                 requireContext(),
-                resources.getString(R.string.saved_note_successfully),
+                resources.getString(R.string.saved_success),
                 Toast.LENGTH_SHORT
             ).show()
             activity?.onBackPressed()
@@ -87,17 +98,23 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun updateNote() {
-
         addNoteBottomSheetBinding.apply {
             title = noteTitleET.text.toString().trim()
             note = noteET.text.toString().trim()
 
             if (inputCheck(title!!, note!!)) {
-                val note = NotesModel(noteModel?.id, title!!, note!!, date!!)
+                val note = NotesModel(
+                    noteModel?.id,
+                    noteModel?.folderID,
+                    noteModel?.folderName,
+                    title!!,
+                    note!!,
+                    date!!
+                )
                 (activity as MainActivity).notesViewModel.updateNote(note)
                 Toast.makeText(
                     requireContext(),
-                    resources.getString(R.string.update_note_successfully),
+                    resources.getString(R.string.update_success),
                     Toast.LENGTH_SHORT
                 ).show()
                 activity?.onBackPressed()
@@ -112,17 +129,53 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateButton() {
+    private fun updateFolder() {
         addNoteBottomSheetBinding.apply {
-            saveBtn.text = resources.getString(R.string.update)
-            saveBtn.setBackgroundResource(R.drawable.update_btn_bg)
-            noteTitleET.setText(noteModel?.title)
-            noteET.setText(noteModel?.note)
+            title = noteTitleET.text.toString().trim()
+            if (title!!.isNotEmpty()) {
+                val folder = FolderModel(folderModel?.folderId, title!!)
+                (activity as MainActivity).notesViewModel.updateFolder(folder)
+                folder.folderId?.let {
+                    (activity as MainActivity).notesViewModel.updateFolderName(
+                        folder.title,
+                        it
+                    )
+                }
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.update_success),
+                    Toast.LENGTH_SHORT
+                ).show()
+                activity?.onBackPressed()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.fill_out_all_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun updateUI(model: Any) {
+        addNoteBottomSheetBinding.apply {
+            if (model is NotesModel) {
+                saveBtn.text = resources.getString(R.string.update)
+                saveBtn.setBackgroundResource(R.drawable.update_btn_bg)
+                noteTitleET.setText(noteModel?.title)
+                noteET.setText(noteModel?.note)
+            } else if (model is FolderModel) {
+                saveBtn.text = resources.getString(R.string.update)
+                saveBtn.setBackgroundResource(R.drawable.update_btn_bg)
+                noteET.visibility = View.GONE
+                noteTitleET.setText(folderModel?.title)
+            }
+
         }
     }
 
     private fun inputCheck(title: String, note: String): Boolean {
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(note))
+        return (title.isNotEmpty() && note.isNotEmpty())
     }
 
 

@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.suret.todoapp.data.dao.NotesDao
+import com.suret.todoapp.data.model.FolderModel
 import com.suret.todoapp.data.model.NotesModel
-import com.suret.todoapp.data.viewmodel.NotesViewModel
 
-@Database(entities = [NotesModel::class], version = 1, exportSchema = false)
+@Database(entities = [NotesModel::class, FolderModel::class], version = 6, exportSchema = false)
 abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun notesDao(): NotesDao
@@ -27,7 +27,7 @@ abstract class NotesDatabase : RoomDatabase() {
                     context.applicationContext,
                     NotesDatabase::class.java,
                     "notes_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }
