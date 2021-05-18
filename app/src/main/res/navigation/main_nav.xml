@@ -11,6 +11,13 @@
         app:exitAnim="@anim/exit_to_left"
         app:popEnterAnim="@anim/enter_from_left"
         app:popExitAnim="@anim/exit_to_right" />
+    <action
+        android:id="@+id/action_to_notesInFolderFragment"
+        app:destination="@+id/notesInFolderFragment"
+        app:enterAnim="@anim/enter_from_right"
+        app:exitAnim="@anim/exit_to_left"
+        app:popEnterAnim="@anim/enter_from_left"
+        app:popExitAnim="@anim/exit_to_right" />
 
     <action
         android:id="@+id/action_mainFragment_to_addNoteBottomSheet"
@@ -34,4 +41,8 @@
         android:id="@+id/menuBottomSheet"
         android:name="com.suret.todoapp.ui.bottomsheet.MenuBottomSheet"
         android:label="MenuBottomSheet" />
+    <fragment
+        android:id="@+id/notesInFolderFragment"
+        android:name="com.suret.todoapp.ui.fragments.notesinfolder.NotesInFolderFragment"
+        android:label="NotesInFolderFragment" />
 </navigation>

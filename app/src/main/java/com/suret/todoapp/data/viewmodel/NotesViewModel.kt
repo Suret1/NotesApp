@@ -1,5 +1,6 @@
 package com.suret.todoapp.data.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suret.todoapp.data.model.FolderModel
@@ -54,6 +55,8 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
             repository.updateFolderName(newFolderName, id)
         }
     }
+    fun getNotesInFolderList(folderId: Int): LiveData<List<NotesModel>> =
+        repository.getNotesInFolderList(folderId)
 
 
 }

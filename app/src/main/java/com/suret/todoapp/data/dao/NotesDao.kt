@@ -41,4 +41,7 @@ interface NotesDao {
     @Query("UPDATE notes SET folderName =:newFolderName  WHERE folderId = :id")
     suspend fun updateFolderName(newFolderName: String, id: Int)
 
+    @Query("SELECT * FROM notes WHERE folderId=:idFolder")
+    fun getNotesInFolderList(idFolder: Int): LiveData<List<NotesModel>>
+
 }

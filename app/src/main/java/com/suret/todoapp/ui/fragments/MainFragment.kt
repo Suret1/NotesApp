@@ -55,6 +55,8 @@ class MainFragment : Fragment() {
 
         tabLayout.setupWithViewPager(viewPager)
 
+
+
     }
 
 }

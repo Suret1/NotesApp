@@ -20,6 +20,7 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
     private lateinit var addNoteBottomSheetBinding: AddNoteBottomSheetBinding
     private var noteModel: NotesModel? = null
     private var folderModel: FolderModel? = null
+    private var folderModelNIF: FolderModel? = null
     private var title: String? = null
     private var note: String? = null
     private var date: String? = null
@@ -45,6 +46,7 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
         date = currentDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
         noteModel = arguments?.getParcelable("noteModel")
         folderModel = arguments?.getParcelable("folderModel")
+        folderModelNIF = arguments?.getParcelable("folderModelFromNIF")
         val fromNote = arguments?.getBoolean("fromNote")
 
         addNoteBottomSheetBinding.apply {
@@ -78,7 +80,7 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
         note = addNoteBottomSheetBinding.noteET.text.toString().trim()
 
         if (inputCheck(title!!, note!!)) {
-            val note = NotesModel(null, null, null, title!!, note!!, date!!)
+            val note = NotesModel(null, folderModelNIF?.folderId, folderModelNIF?.title, title!!, note!!, date!!)
             (activity as MainActivity).notesViewModel.insertNote(note)
             Toast.makeText(
                 requireContext(),

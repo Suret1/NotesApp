@@ -68,11 +68,16 @@ class FolderFragment : Fragment() {
             }
         }
         folderAdapter.setOnItemClickListener {
+
             bundle.apply {
                 if (note != null) {
                     it.folderId?.let { it1 ->
                         note?.id?.let { it2 ->
-                            (activity as MainActivity).notesViewModel.moveToFolder(it1, it.title,it2)
+                            (activity as MainActivity).notesViewModel.moveToFolder(
+                                it1,
+                                it.title,
+                                it2
+                            )
                             runnable = Runnable {
                                 activity?.onBackPressed()
                                 handler.postDelayed(runnable, 2000)
@@ -86,10 +91,14 @@ class FolderFragment : Fragment() {
                         }
                     }
 
+                } else {
+                    bundle.apply {
+                        putParcelable("folderModel", it)
+                    }
+                    navController.navigate(R.id.action_to_notesInFolderFragment, bundle)
                 }
             }
         }
-
     }
 
     private fun showDialog() {
@@ -100,17 +109,17 @@ class FolderFragment : Fragment() {
         val saveBtn = view.findViewById<AppCompatButton>(R.id.save_btn)
         val cancelBtn = view.findViewById<AppCompatButton>(R.id.cancel_btn)
 
-        builder.setView(view)
-        builder.setCancelable(false)
-
-        alertDialog = builder.create()
-        alertDialog?.show()
+        builder.apply {
+            setView(view)
+            setCancelable(false)
+            alertDialog = create()
+            alertDialog?.show()
+        }
 
         saveBtn.setOnClickListener {
             val folderName = folderET.text.toString().trim()
             insertFolder(folderName)
         }
-
 
         cancelBtn.setOnClickListener {
             alertDialog?.dismiss()
@@ -129,7 +138,11 @@ class FolderFragment : Fragment() {
             ).show()
             alertDialog?.dismiss()
         } else {
-            Toast.makeText(requireContext(), getString(R.string.fill_folder_name), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_folder_name),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

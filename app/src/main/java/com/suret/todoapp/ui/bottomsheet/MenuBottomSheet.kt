@@ -1,6 +1,5 @@
 package com.suret.todoapp.ui.bottomsheet
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ class MenuBottomSheet : BottomSheetDialogFragment() {
     private var note: NotesModel? = null
     private var folder: FolderModel? = null
     private lateinit var navController: NavController
-    private var alertDialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

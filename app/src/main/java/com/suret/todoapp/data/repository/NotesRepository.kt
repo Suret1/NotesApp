@@ -23,6 +23,7 @@ class NotesRepository(private val notesDao: NotesDao) {
 
     val getAllFoldersList: LiveData<List<FolderModel>> = notesDao.getAllFoldersList()
 
+
     suspend fun insertFolder(folderModel: FolderModel) {
         notesDao.insertFolder(folderModel)
     }
@@ -46,6 +47,8 @@ class NotesRepository(private val notesDao: NotesDao) {
     suspend fun updateFolderName(newFolderName: String, id: Int) {
         notesDao.updateFolderName(newFolderName, id)
     }
+
+    fun getNotesInFolderList(folderId: Int) = notesDao.getNotesInFolderList(folderId)
 
 
 }

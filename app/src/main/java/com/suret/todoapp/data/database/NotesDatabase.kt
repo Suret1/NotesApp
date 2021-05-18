@@ -8,7 +8,7 @@ import com.suret.todoapp.data.dao.NotesDao
 import com.suret.todoapp.data.model.FolderModel
 import com.suret.todoapp.data.model.NotesModel
 
-@Database(entities = [NotesModel::class, FolderModel::class], version = 6, exportSchema = false)
+@Database(entities = [NotesModel::class, FolderModel::class], version = 7, exportSchema = false)
 abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun notesDao(): NotesDao
