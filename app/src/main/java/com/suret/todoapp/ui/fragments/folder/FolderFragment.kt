@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.get
 import com.google.android.material.snackbar.Snackbar
 import com.suret.todoapp.R
 import com.suret.todoapp.data.model.FolderModel
@@ -67,16 +68,16 @@ class FolderFragment : Fragment() {
                 navController.navigate(R.id.action_menuBottomSheet, bundle)
             }
         }
-        folderAdapter.setOnItemClickListener {
+        folderAdapter.setOnItemClickListener { folder ->
 
             bundle.apply {
                 if (note != null) {
-                    it.folderId?.let { it1 ->
-                        note?.id?.let { it2 ->
+                    folder.folderId?.let { idFolder ->
+                        note?.id?.let { idNote ->
                             (activity as MainActivity).notesViewModel.moveToFolder(
-                                it1,
-                                it.title,
-                                it2
+                                idFolder,
+                                folder.title,
+                                idNote
                             )
                             runnable = Runnable {
                                 activity?.onBackPressed()
@@ -93,13 +94,25 @@ class FolderFragment : Fragment() {
 
                 } else {
                     bundle.apply {
-                        putParcelable("folderModel", it)
+                        putParcelable("folderModel", folder)
                     }
-                    navController.navigate(R.id.action_to_notesInFolderFragment, bundle)
+                    navController.navigate(
+                        com.suret.todoapp.R.id.action_to_notesInFolderFragment,
+                        bundle
+                    )
                 }
             }
+
         }
     }
+
+
+    private fun isDesiredDestination(): Boolean {
+        return with(navController) {
+            currentDestination == graph[R.id.notesInFolderFragment]
+        }
+    }
+
 
     private fun showDialog() {
 

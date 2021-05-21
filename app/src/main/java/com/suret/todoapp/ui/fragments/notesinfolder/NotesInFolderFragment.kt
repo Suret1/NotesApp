@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.get
 import com.suret.todoapp.R
 import com.suret.todoapp.data.model.FolderModel
 import com.suret.todoapp.databinding.FragmentNotesInFolderBinding
@@ -40,6 +41,7 @@ class NotesInFolderFragment : Fragment() {
         folderModel = arguments?.getParcelable("folderModel")
 
 
+
         notesInFolder.apply {
             notesInFolderRecycler.adapter = adapter
 
@@ -69,6 +71,13 @@ class NotesInFolderFragment : Fragment() {
             }
         }
     }
+
+    private fun isDesiredDestination(): Boolean {
+        return with(navController) {
+            currentDestination == graph[R.id.folderFragment]
+        }
+    }
+
 }
 
 

@@ -46,7 +46,6 @@ class MainFragment : Fragment() {
         listOfTitle.add(resources.getString(R.string.all))
         listOfTitle.add(resources.getString(R.string.folder))
 
-
         pagerList = ViewPagerModel(listOfFragment, listOfTitle)
 
         pagerAdapter = MyViewPagerAdapter(pagerList, requireActivity().supportFragmentManager)
@@ -54,8 +53,6 @@ class MainFragment : Fragment() {
         viewPager.adapter = pagerAdapter
 
         tabLayout.setupWithViewPager(viewPager)
-
-
 
     }
 

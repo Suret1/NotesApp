@@ -27,4 +27,5 @@ class MainActivity : AppCompatActivity() {
         notesViewModel =
             ViewModelProvider(this, notesViewModelFactory).get(NotesViewModel::class.java)
     }
+
 }

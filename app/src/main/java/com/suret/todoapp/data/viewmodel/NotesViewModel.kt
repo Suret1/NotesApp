@@ -55,6 +55,7 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
             repository.updateFolderName(newFolderName, id)
         }
     }
+
     fun getNotesInFolderList(folderId: Int): LiveData<List<NotesModel>> =
         repository.getNotesInFolderList(folderId)
 

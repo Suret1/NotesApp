@@ -140,7 +140,7 @@ class AddNoteBottomSheet : BottomSheetDialogFragment() {
                 folder.folderId?.let {
                     (activity as MainActivity).notesViewModel.updateFolderName(
                         folder.title,
-                        it
+                        it,
                     )
                 }
                 Toast.makeText(
