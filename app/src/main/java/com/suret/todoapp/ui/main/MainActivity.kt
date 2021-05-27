@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.get
 import com.suret.todoapp.R
 import com.suret.todoapp.data.database.NotesDatabase
 import com.suret.todoapp.data.repository.NotesRepository

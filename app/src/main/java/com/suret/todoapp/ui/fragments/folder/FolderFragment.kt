@@ -106,14 +106,6 @@ class FolderFragment : Fragment() {
         }
     }
 
-
-    private fun isDesiredDestination(): Boolean {
-        return with(navController) {
-            currentDestination == graph[R.id.notesInFolderFragment]
-        }
-    }
-
-
     private fun showDialog() {
 
         val builder = AlertDialog.Builder(requireContext())

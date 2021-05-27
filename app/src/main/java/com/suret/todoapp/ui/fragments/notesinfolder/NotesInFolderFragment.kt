@@ -72,12 +72,6 @@ class NotesInFolderFragment : Fragment() {
         }
     }
 
-    private fun isDesiredDestination(): Boolean {
-        return with(navController) {
-            currentDestination == graph[R.id.folderFragment]
-        }
-    }
-
 }
 
 
