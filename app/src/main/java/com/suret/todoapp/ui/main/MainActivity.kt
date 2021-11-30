@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.get
 import com.suret.todoapp.R
 import com.suret.todoapp.data.database.NotesDatabase
 import com.suret.todoapp.data.repository.NotesRepository
@@ -25,8 +24,8 @@ class MainActivity : AppCompatActivity() {
         val dao = NotesDatabase.getDatabase(this).notesDao()
         repository = NotesRepository(dao)
         notesViewModelFactory = NotesViewModelFactory(repository)
-        notesViewModel =
-            ViewModelProvider(this, notesViewModelFactory).get(NotesViewModel::class.java)
+        ViewModelProvider(this, notesViewModelFactory)[NotesViewModel::class.java]
+            .also { notesViewModel = it }
     }
 
 }
